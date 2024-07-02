@@ -78,6 +78,7 @@ class AddExpensesActivity : AppCompatActivity(), ApiResponseListner,
         setBuilled(builledType)
         setPaymentMode(paymentModeType)
         apiVendorLabour()
+        requestPermission()
         binding.apply {
             btnUplaodImages.setOnClickListener {
                 openCameraDialog(SELECT_PICTURES1, CAMERA_PERMISSION_CODE1)
@@ -98,8 +99,6 @@ class AddExpensesActivity : AppCompatActivity(), ApiResponseListner,
 
     fun apiAddExpenses() {
         SalesApp.isAddAccessToken = true
-        val params = Utility.getParmMap()
-
         val builder = MultipartBody.Builder()
         builder.setType(MultipartBody.FORM)
         builder.addFormDataPart("customer_id", customerID)
@@ -111,6 +110,7 @@ class AddExpensesActivity : AppCompatActivity(), ApiResponseListner,
         builder.addFormDataPart("payment_mode", binding.SelectPaymentMode.text.toString())
         builder.addFormDataPart("trans_id","")
         builder.addFormDataPart("note", binding.editNote.text.toString())
+        builder.addFormDataPart("invoice_no", binding.editInvoiceNumber.text.toString())
         builder.addFormDataPart("ref_no", binding.editRefNumber.text.toString())
         builder.addFormDataPart("vendor_id", vendorID.toString())
         builder.addFormDataPart("expense_type", binding.SelectExpenseType.text.toString())

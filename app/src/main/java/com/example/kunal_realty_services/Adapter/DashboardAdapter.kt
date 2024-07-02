@@ -39,7 +39,7 @@ class DashboardAdapter(
         holder.tvAmount.text = list[position].subTitle
 
         holder.itemView.setOnClickListener {
-            //  rvClickListner.clickPos(list[position].indexId)
+              rvClickListner.clickPos("",list[position].indexId)
         }
     }
 

@@ -42,6 +42,11 @@
             android:launchMode="singleTop" />
 
         <activity
+            android:name=".Activity.GetExpensInvoiceActivity"
+            android:exported="false"
+            android:launchMode="singleTop" />
+
+        <activity
             android:name=".Activity.PasswordChnageActivity"
             android:exported="false"
             android:launchMode="singleTop" />

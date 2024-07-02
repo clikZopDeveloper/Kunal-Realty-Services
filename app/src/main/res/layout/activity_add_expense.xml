@@ -220,6 +220,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:hint="Select Sale"
+                    android:visibility="gone"
                     app:boxStrokeColor="@color/light_grays">
 
 
@@ -281,7 +282,16 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-
+                <EditText
+                    android:id="@+id/editInvoiceNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edittest_shape"
+                    android:paddingVertical="12dp"
+                    android:elevation="@dimen/_4dip"
+                    android:paddingHorizontal="@dimen/_10dp"
+                    android:layout_marginTop="5dp"
+                    android:hint="Enter Invoice Number"/>
 
                 <EditText
                     android:id="@+id/editRefNumber"

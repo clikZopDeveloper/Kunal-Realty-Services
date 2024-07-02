@@ -146,6 +146,21 @@ class HomeFragment : Fragment(), ApiResponseListner {
         val mAllAdapter = DashboardAdapter(requireActivity(), getDashDataList(data), object :
             RvStatusClickListner {
             override fun clickPos(status: String, pos: Int) {
+                if (pos==2){
+                    requireActivity().startActivity(
+                        Intent(
+                            requireActivity(),
+                            GetExpensInvoiceActivity::class.java
+                        ).putExtra("way", "Customer")
+                    )
+                }else if (pos==3){
+                    requireActivity().startActivity(
+                        Intent(
+                            requireActivity(),
+                            GetExpensInvoiceActivity::class.java
+                        ).putExtra("way", "Vendor")
+                    )
+                }
 
             }
         })
