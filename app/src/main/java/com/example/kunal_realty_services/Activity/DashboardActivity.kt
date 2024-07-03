@@ -46,7 +46,7 @@ class DashboardActivity : AppCompatActivity() {
 
         // rcNav = headerView.findViewById<RecyclerView>(R.id.rcNaDrawer)
 
-         val navController = findNavController(R.id.nav_host_fragment_activity_main)
+          navController = findNavController(R.id.nav_host_fragment_activity_main)
 
     /*    binding.appBarMain.appbarLayout.tvWalletBal.setText(
             PrefManager.getString(
@@ -69,6 +69,42 @@ class DashboardActivity : AppCompatActivity() {
         //  setupActionBarWithNavController(navController, appBarConfiguration)
           navBottomView.setupWithNavController(navController)
 
+        navBottomView.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.navigation_home -> {
+                    navController.popBackStack(R.id.navigation_home,false)
+                    true
+                }
+                R.id.navigation_expenses -> {
+                    navController.navigate(R.id.navigation_expenses)
+                    true
+                }
+                R.id.navigation_wallet_ledger -> {
+                    navController.navigate(R.id.navigation_wallet_ledger)
+                    true
+                }
+                R.id.navigation_sales -> {
+                    navController.navigate(R.id.navigation_sales)
+                    true
+                }
+                R.id.navigation_setting -> {
+                    navController.navigate(R.id.navigation_setting)
+                    true
+                }
+                else -> false
+            }
+        }
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.navigation_home -> navBottomView.menu.findItem(R.id.navigation_home).isChecked = true
+                R.id.navigation_expenses -> navBottomView.menu.findItem(R.id.navigation_expenses).isChecked = true
+                R.id.navigation_wallet_ledger -> navBottomView.menu.findItem(R.id.navigation_wallet_ledger).isChecked = true
+                R.id.navigation_sales -> navBottomView.menu.findItem(R.id.navigation_sales).isChecked = true
+                R.id.navigation_setting -> navBottomView.menu.findItem(R.id.navigation_setting).isChecked = true
+            }
+        }
+
       /*  val bottomNavigationView = findViewById<View>(R.id.bottom_nav_view) as BottomNavigationView
         bottomNavigationView.setOnNavigationItemSelectedListener(mBottomNavigation)
         GeneralUtilities.goToFragment(
@@ -77,8 +113,8 @@ class DashboardActivity : AppCompatActivity() {
             R.id.container,
             true
         )*/
-    }
 
+    }
 
     fun setTitle(title: kotlin.String) {
         binding.appBarMain.appbarLayout.tvTitle.text = title
@@ -103,6 +139,10 @@ class DashboardActivity : AppCompatActivity() {
             super.onBackPressed()
         }
     }
+    override fun onSupportNavigateUp(): Boolean {
+        return navController.navigateUp() || super.onSupportNavigateUp()
+    }
+
     private val mBottomNavigation = BottomNavigationView.OnNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.navigation_home -> {
@@ -173,11 +213,6 @@ class DashboardActivity : AppCompatActivity() {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)
         return true
-    }
-
-    override fun onSupportNavigateUp(): Boolean {
-        val navController = findNavController(R.id.nav_host_fragment_activity_main)
-        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
     override fun onDestroy() {

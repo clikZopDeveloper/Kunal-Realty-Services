@@ -1,11 +1,14 @@
 package com.example.kunal_realty_services.Adapter
 
 import android.app.Activity
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.kunal_realty_services.Activity.AddExpensesActivity
 import com.example.kunal_realty_services.Model.GetExpensesBean
 import com.example.kunal_realty_services.R
 import com.example.kunal_realty_services.Utills.RvStatusClickListner
@@ -40,13 +43,34 @@ class GetExpenseAdapter(
         holder.tvName.text = list[position].name
         holder.tvPaymentMode.text = list[position].paymentMode
         holder.tvCat.text = list[position].expenseCategory
-        holder.tvSubCat.text = list[position].expenseSubcategory
         holder.tvVendorName.text = list[position].vendorName
-        holder.tvExpenseType.text = list[position].expenseType
-        holder.tvBuildType.text = list[position].build
         holder.tvNote.text = list[position].note
         holder.tvAmount.text = ApiContants.currency+list[position].amount
 
+        holder.ivEdit.setOnClickListener {
+
+            context.startActivity(
+                Intent(
+                    context,
+                    AddExpensesActivity::class.java
+                )
+                    .putExtra("file", list[position].file)
+                    .putExtra("id", list[position].id.toString())
+                    .putExtra("ids", list[position].ids.toString())
+                    .putExtra("vendorId", list[position].vendorId.toString())
+                    .putExtra("name", list[position].name)
+                    .putExtra("note", list[position].note)
+                    .putExtra("expenseCategory", list[position].expenseCategory)
+                    .putExtra("expenseDate", list[position].expenseDate)
+                    .putExtra("amount", list[position].amount.toString())
+                    .putExtra("customerName", list[position].customerName.toString())
+                    .putExtra("vendorName", list[position].vendorName?.toString())
+                    .putExtra("invoiceNo", "")
+                    .putExtra("refNo", list[position].refNo?.toString())
+                    .putExtra("paymentMode", list[position].paymentMode?.toString())
+                    .putExtra("way","EditExpense")
+            )
+        }
         holder.itemView.setOnClickListener {
             //  rvClickListner.clickPos(list[position].indexId)
         }
@@ -67,6 +91,7 @@ class GetExpenseAdapter(
         val tvBuildType: TextView = itemview.findViewById(R.id.tvBuildType)
         val tvNote: TextView = itemview.findViewById(R.id.tvNote)
         val tvAmount: TextView = itemview.findViewById(R.id.tvAmount)
+        val ivEdit: ImageView = itemview.findViewById(R.id.ivEdit)
     }
 
 }

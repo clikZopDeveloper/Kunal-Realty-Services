@@ -13,48 +13,42 @@ data class GetExpensesBean(
 ) {
     data class Data(
         @SerializedName("amount")
-        val amount: String, // 3.00
-        @SerializedName("build")
-        val build: String, // Billed
+        val amount: String, // 20000.00
         @SerializedName("created_at")
-        val createdAt: String, // 2024-05-29 17:40:01
+        val createdAt: String, // 2024-07-02 18:28:00
+        @SerializedName("customer_name")
+        val customerName: String, // Customer 1
         @SerializedName("expense_category")
         val expenseCategory: String, // Travel
         @SerializedName("expense_date")
-        val expenseDate: String, // 2024-05-31
-        @SerializedName("expense_subcategory")
-        val expenseSubcategory: String, // Cab
-        @SerializedName("expense_type")
-        val expenseType: String, // Labour
+        val expenseDate: String, // 2024-07-02
         @SerializedName("expenses_for")
         val expensesFor: Any, // null
         @SerializedName("file")
-        val `file`: String, // ../invoices/8463657365330150-title.jpg
+        val `file`: String,
         @SerializedName("id")
         val id: Int, // 4
         @SerializedName("ids")
-        val ids: String, // Customer 2
-        @SerializedName("invoice_id")
-        val invoiceId: Int, // 0
+        val ids: Int, // 1
         @SerializedName("name")
-        val name: String, // jhjk
+        val name: String, // test
         @SerializedName("note")
-        val note: String, // cvcv
+        val note: String, // test
         @SerializedName("payment_mode")
         val paymentMode: String, // Cash
         @SerializedName("ref_no")
-        val refNo: String, // asadf
+        val refNo: String, // ref
         @SerializedName("trans_id")
         val transId: String,
         @SerializedName("updated_at")
         val updatedAt: Any, // null
         @SerializedName("user")
-        val user: String, // Test user
+        val user: String, // User 1
         @SerializedName("user_id")
-        val userId: Int, // 11
+        val userId: Int, // 7
         @SerializedName("vendor_id")
-        val vendorId: Int, // 2
+        val vendorId: Int, // 1
         @SerializedName("vendor_name")
-        val vendorName: String // Labor 1
+        val vendorName: String // Test
     )
 }

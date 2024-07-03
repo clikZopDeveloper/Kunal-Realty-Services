@@ -66,20 +66,21 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_5dip"
                 android:padding="@dimen/_2dip"
+                android:visibility="gone"
                 android:layout_marginHorizontal="@dimen/_5dip"
                 android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="GST Type : "
+                    android:text="Invoice Number : "
                     android:layout_below="@+id/tvDate"
                     android:layout_gravity="center"
                     android:fontFamily="@font/roboto_regular"
                     android:textSize="@dimen/_12sp" />
 
                 <TextView
-                    android:id="@+id/tvGSTType"
+                    android:id="@+id/tvInvoiceNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text=""
@@ -133,6 +134,42 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="Invoice Date : "
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/roboto_regular"
+                    android:textSize="@dimen/_12sp" />
+                <TextView
+                    android:id="@+id/tvInvoiceDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:layout_weight="1"
+                    android:layout_marginStart="@dimen/_10dp"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/roboto_bold"
+                    android:textSize="@dimen/_14sp"
+                    android:textColor="@color/black" />
+                <TextView
+                    android:id="@+id/tvAmount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="zxcvxcv"
+                    android:background="@drawable/btn_round_shape_white"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:textColor="@color/white"
+                    android:padding="@dimen/_4dip"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_2dip"
+                android:layout_marginTop="@dimen/_5dip"
+                android:layout_marginHorizontal="@dimen/_5dip"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:text="Due Date : "
                     android:layout_gravity="center"
                     android:fontFamily="@font/roboto_regular"
@@ -158,12 +195,12 @@
                     android:background="@drawable/circle"
                     android:padding="@dimen/_2dip"/>
             </LinearLayout>
+
         <LinearLayout
             android:id="@+id/llInvoice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/_2dip"
-            android:visibility="gone"
             android:layout_marginTop="@dimen/_5dip"
             android:layout_marginHorizontal="@dimen/_5dip"
             android:orientation="horizontal"

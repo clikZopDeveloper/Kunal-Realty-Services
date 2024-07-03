@@ -61,13 +61,13 @@ class HomeFragment : Fragment(), ApiResponseListner {
         //    ApiContants.movabalebutton(binding.fbAddArchitect,requireActivity())
 
             //    apiWalletLadger()
-        apiDashboard()
+
         binding.apply {
             cardAddSale.setOnClickListener {
                 requireActivity().startActivity(
                     Intent(
                         requireActivity(),
-                        AddSalesActivity::class.java
+                        AddInvoiceActivity::class.java
                     ).putExtra("way", "Add Sale")
                 )
             }
@@ -174,7 +174,9 @@ class HomeFragment : Fragment(), ApiResponseListner {
             LinearLayoutManager(requireContext())
         val mAllAdapter = HomeSaleAdapter(requireActivity(),data, object :
             RvStatusClickListner {
-            override fun clickPos(status: String, pos: Int) {
+            override fun clickPos(link: String, pos: Int) {
+                requireActivity().startActivity(Intent(requireActivity(),WebviewActivity::class.java).putExtra("invoiceUrl",link))
+
             }
         })
         binding.rcSale.adapter = mAllAdapter
@@ -252,7 +254,7 @@ class HomeFragment : Fragment(), ApiResponseListner {
 
     override fun onResume() {
         super.onResume()
-        //   apiAllGet()
+        apiDashboard()
     }
 
 }

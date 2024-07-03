@@ -62,6 +62,7 @@
                 android:drawableTint="@color/colorPrimary"
                 android:drawablePadding="@dimen/_10dp"
                 android:text=""
+                android:inputType="textPassword"
                 android:singleLine="true" />
 
         </com.google.android.material.textfield.TextInputLayout>

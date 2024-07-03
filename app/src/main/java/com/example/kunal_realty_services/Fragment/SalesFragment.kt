@@ -46,13 +46,17 @@ class SalesFragment : Fragment(), ApiResponseListner {
         titleText?.setTitle("All Invoice")
 
         binding.fbAddArchitect.setOnClickListener {
-            requireActivity().startActivity(Intent(requireActivity(), AddSalesActivity::class.java).putExtra("way","Add Sales"))
+            requireActivity().startActivity(
+                Intent(
+                    requireActivity(),
+                    AddInvoiceActivity::class.java
+                ).putExtra("way", "Add Sales")
+            )
         }
 
         apiClient = ApiController(activity, this)
-  //    ApiContants.movabalebutton(binding.fbAddArchitect,requireActivity())
+        //    ApiContants.movabalebutton(binding.fbAddArchitect,requireActivity())
         allGetApi()
-
 
         return root
     }
@@ -71,6 +75,7 @@ class SalesFragment : Fragment(), ApiResponseListner {
         apiClient.progressView.showLoader()
         apiClient.getApiPostCall(ApiContants.getCustomer, params)
     }
+
     override fun success(tag: String?, jsonElement: JsonElement) {
         try {
             apiClient.progressView.hideLoader()
@@ -140,13 +145,19 @@ class SalesFragment : Fragment(), ApiResponseListner {
         val mAllAdapter = GetSaleAdapter(requireActivity(), data, object :
             RvStatusClickListner {
             override fun clickPos(link: String, pos: Int) {
-requireActivity().startActivity(Intent(requireActivity(),WebviewActivity::class.java).putExtra("invoiceUrl",link))
+                requireActivity().startActivity(
+                    Intent(
+                        requireActivity(),
+                        WebviewActivity::class.java
+                    ).putExtra("invoiceUrl", link)
+                )
             }
         })
         binding.rcSales.adapter = mAllAdapter
         mAllAdapter.notifyDataSetChanged()
         // rvMyAcFiled.isNestedScrollingEnabled = false
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

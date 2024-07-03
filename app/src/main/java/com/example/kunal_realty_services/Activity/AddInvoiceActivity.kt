@@ -24,8 +24,8 @@ import com.example.kunal_realty_services.ApiHelper.ApiResponseListner
 import com.example.kunal_realty_services.Model.*
 import com.example.kunal_realty_services.R
 import com.example.kunal_realty_services.Utills.*
-import com.example.kunal_realty_services.databinding.ActivityAddSalesBinding
 import com.example.kktext_testing.Model.AddProductBean
+import com.example.kunal_realty_services.databinding.ActivityAddInvoiceBinding
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.gson.Gson
@@ -35,12 +35,13 @@ import java.io.File
 import java.util.*
 
 
-class AddSalesActivity : AppCompatActivity(), ApiResponseListner,
+class AddInvoiceActivity : AppCompatActivity(), ApiResponseListner,
     GoogleApiClient.OnConnectionFailedListener,
     ConnectivityListener.ConnectivityReceiverListener {
+    private var id = ""
     private var companyID = ""
     private var customerID = ""
-    private lateinit var binding: ActivityAddSalesBinding
+    private lateinit var binding: ActivityAddInvoiceBinding
     private lateinit var apiClient: ApiController
     val list: MutableList<AddProductBean> = ArrayList()
     val PERMISSION_CODE = 12345
@@ -60,7 +61,7 @@ class AddSalesActivity : AppCompatActivity(), ApiResponseListner,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_add_sales)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_add_invoice)
         if (SalesApp.isEnableScreenshort == true) {
             window.setFlags(
                 WindowManager.LayoutParams.FLAG_SECURE,
@@ -73,18 +74,14 @@ class AddSalesActivity : AppCompatActivity(), ApiResponseListner,
         binding.igToolbar.ivMenu.setImageDrawable(resources.getDrawable(R.drawable.ic_back_black))
         binding.igToolbar.ivMenu.setOnClickListener { finish() }
         binding.igToolbar.ivMenu.visibility = View.VISIBLE
-        binding.igToolbar.tvWalletBal.visibility=View.GONE
+        binding.igToolbar.tvWalletBal.visibility = View.GONE
         apiClient = ApiController(activity, this)
         val wayType = intent.getStringExtra("way")
-        if (wayType.equals("EditSale")) {
-           val  id=intent.getStringExtra("id").toString()
-
-             binding.editDueDate.setText(intent.getStringExtra("dueDate").toString())
-          // binding.SelectTCS.setText(intent.getStringExtra("dueDate").toString())
-           binding.editSalesDate.setText(intent.getStringExtra("invoiceDate").toString())
-            binding.SelectGSTType.setText(intent.getStringExtra("gstType").toString())
-            binding.SelectBilled.setText(intent.getStringExtra("build").toString())
-        }else{
+        if (wayType.equals("EditInvoice")) {
+            binding.igToolbar.tvTitle.text = "Edit Invoice"
+            id = intent.getStringExtra("id").toString()
+            apiEventList(id)
+        } else {
             binding.igToolbar.tvTitle.text = "Add Invoice"
         }
         allGetApi()
@@ -100,9 +97,10 @@ class AddSalesActivity : AppCompatActivity(), ApiResponseListner,
             }
 
             btnAddCategory.setOnClickListener {
-                if (binding.SelectCategory.text.toString().isNullOrEmpty()){
-                    Toast.makeText(this@AddSalesActivity,"Select Category",Toast.LENGTH_SHORT).show()
-                }else{
+                if (binding.SelectCategory.text.toString().isNullOrEmpty()) {
+                    Toast.makeText(this@AddInvoiceActivity, "Select Category", Toast.LENGTH_SHORT)
+                        .show()
+                } else {
                     val multiple = AddProductBean(
                         binding.SelectCategory.text.toString(),
                         binding.SelectSubCategory.text.toString(),
@@ -129,11 +127,11 @@ class AddSalesActivity : AppCompatActivity(), ApiResponseListner,
             }
 
             editSalesDate.setOnClickListener(View.OnClickListener {
-                ApiContants.showDate(activity,editSalesDate)
+                ApiContants.showDate(activity, editSalesDate)
             })
 
             editDueDate.setOnClickListener(View.OnClickListener {
-                ApiContants.showDate(activity,editDueDate)
+                ApiContants.showDate(activity, editDueDate)
             })
 
             btnSubmit.setOnClickListener {
@@ -142,19 +140,28 @@ class AddSalesActivity : AppCompatActivity(), ApiResponseListner,
         }
     }
 
+    fun apiEventList(ids: String) {
+        SalesApp.isAddAccessToken = true
+        val params = Utility.getParmMap()
+        params["sale_id"] = ids
+        apiClient.progressView.showLoader()
+        apiClient.getApiPostCall(ApiContants.getSaleDetail, params)
+    }
+
     fun allGetApi() {
         SalesApp.isAddAccessToken = true
         val params = Utility.getParmMap()
         apiClient.progressView.showLoader()
         apiClient.getApiPostCall(ApiContants.getCategory, params)
         apiClient.getApiPostCall(ApiContants.getCustomer, params)
-    //    apiClient.getApiPostCall(ApiContants.getCompany, params)
+        //    apiClient.getApiPostCall(ApiContants.getCompany, params)
         apiClient.getApiPostCall(ApiContants.getGST, params)
     }
 
     fun apiAddSale() {
         SalesApp.isAddAccessToken = true
         val params = Utility.getParmMap()
+        params["id"] = id
         params["company_id"] = "0"
         params["customer_id"] = customerID
         params["prod_list"] = Gson().toJson(list)
@@ -164,11 +171,9 @@ class AddSalesActivity : AppCompatActivity(), ApiResponseListner,
         params["gst_type_mst"] = binding.SelectGSTType.text.toString()
         params["is_billed"] = binding.SelectBilled.text.toString()
         apiClient.progressView.showLoader()
-        Log.d("sdfgsdfhg",Gson().toJson(params))
+        Log.d("sdfgsdfhg", Gson().toJson(params))
         apiClient.getApiPostCall(ApiContants.getAddSale, params)
     }
-
-
 
     fun apiSubCategory() {
         SalesApp.isAddAccessToken = true
@@ -187,11 +192,11 @@ class AddSalesActivity : AppCompatActivity(), ApiResponseListner,
                     CategoryBean::class.java
                 )
                 if (categoryBean.error == false) {
-                    Toast.makeText(this@AddSalesActivity, categoryBean.msg, Toast.LENGTH_SHORT)
+                    Toast.makeText(this@AddInvoiceActivity, categoryBean.msg, Toast.LENGTH_SHORT)
                         .show()
                     finish()
                 } else {
-                    Toast.makeText(this@AddSalesActivity, categoryBean.msg, Toast.LENGTH_SHORT)
+                    Toast.makeText(this@AddInvoiceActivity, categoryBean.msg, Toast.LENGTH_SHORT)
                         .show()
 
                 }
@@ -228,6 +233,7 @@ class AddSalesActivity : AppCompatActivity(), ApiResponseListner,
                     setCustomer(customerBean.data)
                 }
             }
+
             if (tag == ApiContants.getCompany) {
                 val companyBean = apiClient.getConvertIntoModel<CompanyBean>(
                     jsonElement.toString(),
@@ -251,11 +257,48 @@ class AddSalesActivity : AppCompatActivity(), ApiResponseListner,
                 }
             }
 
+            if (tag == ApiContants.getSaleDetail) {
+                val eventDetail = apiClient.getConvertIntoModel<InvoiceDetail>(
+                    jsonElement.toString(),
+                    InvoiceDetail::class.java
+                )
+                if (eventDetail.error == false) {
+                    binding.apply {
+
+                        for (orderList in eventDetail.data.orderDet) {
+                            val multiple = AddProductBean(
+                                orderList.category,
+                                orderList.subCategory,
+                                orderList.description,
+                                orderList.qty.toString(),
+                                orderList.price,
+                                orderList.gst, "", ""
+                            )
+                            list.add(multiple)
+                        }
+                        Log.d("yuiyuiyu", Gson().toJson(list))
+                        handleProductList(list)
+
+                        val saleRsposne = eventDetail.data.orderMst
+
+
+                        id = saleRsposne.id.toString()
+                        companyID = saleRsposne.companyId.toString()
+                        customerID = saleRsposne.customerId.toString()
+
+                        SelectCustomer.setText(saleRsposne.customer)
+                        editSalesDate.setText(saleRsposne.invoiceDate)
+                        editDueDate.setText(saleRsposne.dueDate)
+                        SelectTCS.setText(saleRsposne.serviceTax)
+                        SelectGSTType.setText(saleRsposne.gstType)
+                        //  SelectGST.setText(saleRsposne.gst)
+                    }
+                }
+            }
 
         } catch (e: Exception) {
             Log.d("error>>", e.localizedMessage)
         }
-
     }
 
     override fun failure(tag: String?, errorMessage: String) {
@@ -273,7 +316,7 @@ class AddSalesActivity : AppCompatActivity(), ApiResponseListner,
 
         val adapte1: ArrayAdapter<String?>
         adapte1 = ArrayAdapter(
-            this@AddSalesActivity,
+            this@AddInvoiceActivity,
             android.R.layout.simple_list_item_1,
             state
         )
@@ -302,7 +345,7 @@ class AddSalesActivity : AppCompatActivity(), ApiResponseListner,
 
         val adapte1: ArrayAdapter<String?>
         adapte1 = ArrayAdapter(
-            this@AddSalesActivity,
+            this@AddInvoiceActivity,
             android.R.layout.simple_list_item_1,
             state
         )
@@ -323,7 +366,9 @@ class AddSalesActivity : AppCompatActivity(), ApiResponseListner,
 
     }
 
-    fun setTCS(data: List<String>) {
+    fun setTCS(data: List<String>)
+
+    {
         val state = arrayOfNulls<String>(data.size)
         for (i in data.indices) {
             state[i] = data.get(i)
@@ -331,7 +376,7 @@ class AddSalesActivity : AppCompatActivity(), ApiResponseListner,
 
         val adapte1: ArrayAdapter<String?>
         adapte1 = ArrayAdapter(
-            this@AddSalesActivity,
+            this@AddInvoiceActivity,
             android.R.layout.simple_list_item_1,
             state
         )
@@ -360,7 +405,7 @@ class AddSalesActivity : AppCompatActivity(), ApiResponseListner,
 
         val adapte1: ArrayAdapter<String?>
         adapte1 = ArrayAdapter(
-            this@AddSalesActivity,
+            this@AddInvoiceActivity,
             android.R.layout.simple_list_item_1,
             state
         )
@@ -372,8 +417,6 @@ class AddSalesActivity : AppCompatActivity(), ApiResponseListner,
             /* for (i in data.indices) {
                  if (data.get(i).invoice.equals(parent.getItemAtPosition(position))) {
                      Log.d("StateID", data.get(i).id.toString())
-
-
                  }
              }*/
         })
@@ -389,7 +432,7 @@ class AddSalesActivity : AppCompatActivity(), ApiResponseListner,
 
         val adapte1: ArrayAdapter<String?>
         adapte1 = ArrayAdapter(
-            this@AddSalesActivity,
+            this@AddInvoiceActivity,
             android.R.layout.simple_list_item_1,
             state
         )
@@ -397,15 +440,16 @@ class AddSalesActivity : AppCompatActivity(), ApiResponseListner,
         binding.SelectGSTType.setOnItemClickListener(AdapterView.OnItemClickListener { parent, view, position, id ->
             Log.d("xcvxcvc", Gson().toJson(data.get(position)))
             //catName=data.get(position)
-            setGSTType(data)
+          //  binding.SelectGSTType.setText(data.get(position))
+            setGSTType(GSTType)
+
             /* for (i in data.indices) {
                  if (data.get(i).invoice.equals(parent.getItemAtPosition(position))) {
                      Log.d("StateID", data.get(i).id.toString())
-
-
                  }
              }*/
         })
+
         adapte1.notifyDataSetChanged()
 
     }
@@ -418,7 +462,7 @@ class AddSalesActivity : AppCompatActivity(), ApiResponseListner,
 
         val adapte1: ArrayAdapter<String?>
         adapte1 = ArrayAdapter(
-            this@AddSalesActivity,
+            this@AddInvoiceActivity,
             android.R.layout.simple_list_item_1,
 
             state
@@ -449,7 +493,7 @@ class AddSalesActivity : AppCompatActivity(), ApiResponseListner,
 
         val adapte1: ArrayAdapter<String?>
         adapte1 = ArrayAdapter(
-            this@AddSalesActivity,
+            this@AddInvoiceActivity,
             android.R.layout.simple_list_item_1,
 
             state
@@ -479,7 +523,7 @@ class AddSalesActivity : AppCompatActivity(), ApiResponseListner,
 
         val adapte1: ArrayAdapter<String?>
         adapte1 = ArrayAdapter(
-            this@AddSalesActivity,
+            this@AddInvoiceActivity,
             android.R.layout.simple_list_item_1,
             state
         )
@@ -489,13 +533,13 @@ class AddSalesActivity : AppCompatActivity(), ApiResponseListner,
             catName = data.get(position).name.toString()
 
             setCategory(data)
-             for (i in data.indices) {
-                 if (data.get(i).name.equals(parent.getItemAtPosition(position))) {
-                     Log.d("StateID", data.get(i).id.toString())
-                     catID=data.get(i).id.toString()
-                     apiSubCategory()
-                 }
-             }
+            for (i in data.indices) {
+                if (data.get(i).name.equals(parent.getItemAtPosition(position))) {
+                    Log.d("StateID", data.get(i).id.toString())
+                    catID = data.get(i).id.toString()
+                    apiSubCategory()
+                }
+            }
         })
         adapte1.notifyDataSetChanged()
     }
@@ -508,7 +552,7 @@ class AddSalesActivity : AppCompatActivity(), ApiResponseListner,
 
         val adapte1: ArrayAdapter<String?>
         adapte1 = ArrayAdapter(
-            this@AddSalesActivity,
+            this@AddInvoiceActivity,
             android.R.layout.simple_list_item_1,
             state
         )
@@ -517,13 +561,13 @@ class AddSalesActivity : AppCompatActivity(), ApiResponseListner,
             Log.d("xcvxcvc", Gson().toJson(data.get(position).name))
             subCatName = data.get(position).name.toString()
             apiSubCategory()
-         /*   for (i in data.indices) {
-                if (data.get(i).name.equals(parent.getItemAtPosition(position))) {
-                    Log.d("StateID", data.get(i).id.toString())
-                    //      setCategory(data)
+            /*   for (i in data.indices) {
+                   if (data.get(i).name.equals(parent.getItemAtPosition(position))) {
+                       Log.d("StateID", data.get(i).id.toString())
+                       //      setCategory(data)
 
-                }
-            }*/
+                   }
+               }*/
         })
         adapte1.notifyDataSetChanged()
 
@@ -532,7 +576,7 @@ class AddSalesActivity : AppCompatActivity(), ApiResponseListner,
     fun handleProductList(data: MutableList<AddProductBean>) {
         binding.rcAllProduct.visibility = View.VISIBLE
         binding.rcAllProduct.layoutManager = LinearLayoutManager(this)
-        var mAdapter = AddSaleProductAdapter(this,  data, object :
+        var mAdapter = AddSaleProductAdapter(this, data, object :
             RvStatusClickListner {
             override fun clickPos(status: String, pos: Int) {
 
@@ -655,7 +699,7 @@ class AddSalesActivity : AppCompatActivity(), ApiResponseListner,
 
         if (requestCode == CAMERA_PERMISSION_CODE1) {
             try {
-                Toast.makeText(this@AddSalesActivity, "sdfsd", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@AddInvoiceActivity, "sdfsd", Toast.LENGTH_SHORT).show()
 
                 val imageBitmap = data?.extras?.get("data") as Bitmap
                 binding.btnAadharFront.setImageBitmap(imageBitmap)

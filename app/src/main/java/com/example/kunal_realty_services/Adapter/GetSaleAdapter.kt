@@ -10,10 +10,11 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.example.kunal_realty_services.Activity.AddSalesActivity
+import com.example.kunal_realty_services.Activity.AddInvoiceActivity
 import com.example.kunal_realty_services.Model.GetSalesBean
 import com.example.kunal_realty_services.R
 import com.example.kunal_realty_services.Utills.RvStatusClickListner
+import com.stpl.antimatter.Utils.ApiContants
 
 
 class GetSaleAdapter(
@@ -42,10 +43,12 @@ class GetSaleAdapter(
 
         holder.llInvoice.visibility=View.VISIBLE
         holder.tvInvoice.text = list[position].invoice
-        holder.tvGSTType.text = list[position].gstType
+       // holder.tvInvoiceNumber.text = list[position].invoiceNumber
         holder.tvPaymentStatus.text = list[position].paymentStatus
+        holder.tvAmount.text =  ApiContants.currency+list[position].amt
         holder.tvIsBilled.text = list[position].isBilled
         holder.tvDueDate.text = list[position].dueDate
+        holder.tvInvoiceDate.text = list[position].invoiceDate
         if (list[position].paymentStatus.equals("pending")) {
             holder.tvPaymentStatus.setTextColor(
                 ContextCompat.getColor(
@@ -63,20 +66,18 @@ class GetSaleAdapter(
                 )
             );
         }
+
         holder.ivEdit.setOnClickListener {
             context.startActivity(
                 Intent(
                     context,
-                    AddSalesActivity::class.java
+                    AddInvoiceActivity::class.java
                 )
-                    .putExtra("id", list[position].id)
-                    .putExtra("build", list[position].isBilled)
-                    .putExtra("dueDate", list[position].dueDate)
-                    .putExtra("invoiceDate", list[position].invoiceDate)
-                    .putExtra("gstType", list[position].gstType)
-                    .putExtra("way","EditSale")
+                    .putExtra("id", list[position].id.toString())
+                    .putExtra("way","EditInvoice")
             )
         }
+
         holder.tvViewAdminInvoice.setOnClickListener {
              rvClickListner.clickPos(list[position].adminCopy,list[position].id)
         }
@@ -92,11 +93,13 @@ class GetSaleAdapter(
     inner class MyViewHolder(itemview: View) : RecyclerView.ViewHolder(itemview) {
         val tvInvoice: TextView = itemview.findViewById(R.id.tvInvoice)
         val tvPaymentStatus: TextView = itemview.findViewById(R.id.tvPaymentStatus)
-        val tvGSTType: TextView = itemview.findViewById(R.id.tvGSTType)
+        val tvInvoiceNumber: TextView = itemview.findViewById(R.id.tvInvoiceNumber)
         val tvIsBilled: TextView = itemview.findViewById(R.id.tvIsBilled)
         val tvDueDate: TextView = itemview.findViewById(R.id.tvDueDate)
         val tvViewAdminInvoice: TextView = itemview.findViewById(R.id.tvViewAdminInvoice)
         val tvViewCustInvoice: TextView = itemview.findViewById(R.id.tvViewCustInvoice)
+        val tvInvoiceDate: TextView = itemview.findViewById(R.id.tvInvoiceDate)
+        val tvAmount: TextView = itemview.findViewById(R.id.tvAmount)
         val llInvoice: LinearLayout = itemview.findViewById(R.id.llInvoice)
         val ivEdit: ImageView = itemview.findViewById(R.id.ivEdit)
     }

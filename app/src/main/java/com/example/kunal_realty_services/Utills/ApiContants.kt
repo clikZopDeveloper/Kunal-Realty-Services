@@ -28,6 +28,7 @@ public class ApiContants {
         const val password = "password"
         const val name = "name"
         const val state = "state"
+        const val getSaleDetail = "get-sale-details"
         const val status = "status"
         const val walletBalance = "walletBalance"
         const val PlaceRegion = "locationCountry"

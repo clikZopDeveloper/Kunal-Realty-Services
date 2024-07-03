@@ -52,7 +52,7 @@
             android:launchMode="singleTop" />
 
         <activity
-            android:name=".Activity.AddSalesActivity"
+            android:name=".Activity.AddInvoiceActivity"
             android:exported="false"
             android:launchMode="singleTop" />
         <activity
