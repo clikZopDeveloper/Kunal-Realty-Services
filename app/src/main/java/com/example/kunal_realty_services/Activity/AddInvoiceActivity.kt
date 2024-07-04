@@ -84,6 +84,7 @@ class AddInvoiceActivity : AppCompatActivity(), ApiResponseListner,
         } else {
             binding.igToolbar.tvTitle.text = "Add Invoice"
         }
+
         allGetApi()
         setBuilled(builledType)
         setGSTType(GSTType)
@@ -122,7 +123,7 @@ class AddInvoiceActivity : AppCompatActivity(), ApiResponseListner,
                     binding.editPrice.text.clear()
                     binding.SelectGST.text.clear()
                     binding.editCommisionPerQty.text.clear()
-                    binding.SelectGSTType.text.clear()
+                    binding.SelectItemGSTType.text.clear()
                 }
             }
 
@@ -138,6 +139,7 @@ class AddInvoiceActivity : AppCompatActivity(), ApiResponseListner,
                 apiAddSale()
             }
         }
+
     }
 
     fun apiEventList(ids: String) {
@@ -198,7 +200,6 @@ class AddInvoiceActivity : AppCompatActivity(), ApiResponseListner,
                 } else {
                     Toast.makeText(this@AddInvoiceActivity, categoryBean.msg, Toast.LENGTH_SHORT)
                         .show()
-
                 }
             }
             if (tag == ApiContants.getCategory) {
@@ -262,6 +263,7 @@ class AddInvoiceActivity : AppCompatActivity(), ApiResponseListner,
                     jsonElement.toString(),
                     InvoiceDetail::class.java
                 )
+
                 if (eventDetail.error == false) {
                     binding.apply {
 
@@ -366,9 +368,7 @@ class AddInvoiceActivity : AppCompatActivity(), ApiResponseListner,
 
     }
 
-    fun setTCS(data: List<String>)
-
-    {
+    fun setTCS(data: List<String>) {
         val state = arrayOfNulls<String>(data.size)
         for (i in data.indices) {
             state[i] = data.get(i)
@@ -440,7 +440,7 @@ class AddInvoiceActivity : AppCompatActivity(), ApiResponseListner,
         binding.SelectGSTType.setOnItemClickListener(AdapterView.OnItemClickListener { parent, view, position, id ->
             Log.d("xcvxcvc", Gson().toJson(data.get(position)))
             //catName=data.get(position)
-          //  binding.SelectGSTType.setText(data.get(position))
+            binding.SelectGSTType.setText(data.get(position))
             setGSTType(GSTType)
 
             /* for (i in data.indices) {

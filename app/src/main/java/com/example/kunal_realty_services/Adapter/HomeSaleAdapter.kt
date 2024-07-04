@@ -69,11 +69,9 @@ class HomeSaleAdapter(
             context.startActivity(
                 Intent(
                     context,
-                    AddInvoiceActivity::class.java
-                )
+                     AddInvoiceActivity::class.java)
                     .putExtra("id", list[position].id.toString())
-                    .putExtra("way","EditInvoice")
-            )
+                    .putExtra("way","EditInvoice"))
         }
 
         holder.tvViewAdminInvoice.setOnClickListener {
