@@ -110,7 +110,7 @@ class AddInvoiceActivity : AppCompatActivity(), ApiResponseListner,
                         binding.editPrice.text.toString(),
                         binding.SelectGST.text.toString(),
                         binding.editCommisionPerQty.text.toString(),
-                        binding.SelectGSTType.text.toString()
+                        binding.SelectItemGSTType.text.toString()
                     )
                     list.add(multiple)
 
